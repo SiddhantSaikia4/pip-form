@@ -1,17 +1,21 @@
 import React from "react";
-import { AppointmentPlan } from "../models";
+import { EmployeePosition } from "../models";
 import { TextInput } from "./TextInput";
 import { SelectInput, SelectInputOption } from "./SelectInput";
 import { DateInput } from "./DateInput";
 
 const planOptions: SelectInputOption[] = [
   {
-    title: "Basic plan",
-    value: AppointmentPlan.Basic,
+    title: "Senior Manager",
+    value: EmployeePosition.Senior,
   },
   {
-    title: "Premium plan",
-    value: AppointmentPlan.Premium,
+    title: "Software Engineer",
+    value: EmployeePosition.Junior,
+  },
+  {
+    title: "Asociate Software Engineer",
+    value: EmployeePosition.Asociate,
   },
 ];
 
@@ -30,7 +34,7 @@ export const AppointmentBaseForm = () => {
     <section>
       <div style={containerStyle}>
         <div style={fullWidthStyle}>
-          <TextInput name="title" label="Title*" placeholder="Enter" />
+          <TextInput name="title" label="Department*" placeholder="Enter" />
         </div>
         <div>
           <DateInput name="date" label="Date*" placeholder="Select date" />
@@ -38,8 +42,8 @@ export const AppointmentBaseForm = () => {
         <div>
           <SelectInput
             name="plan"
-            label="Plan"
-            placeholder="Select plan"
+            label="Position"
+            placeholder="Select Position"
             options={planOptions}
           />
         </div>

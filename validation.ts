@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { AppointmentPlan } from "./models";
+import {  EmployeePosition } from "./models";
 import "yup-phone";
 
 const today = new Date();
@@ -14,7 +14,7 @@ export const validationSchema = yup.object().shape({
     .label("Date"),
   plan: yup
     .string()
-    .oneOf([AppointmentPlan.Basic, AppointmentPlan.Premium])
+    .oneOf([EmployeePosition.Senior, EmployeePosition.Junior])
     .required()
     .label("Plan"),
   contact: yup.object({

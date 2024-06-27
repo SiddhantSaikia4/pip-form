@@ -4,7 +4,7 @@ export default function Form() {
   return (
     <div>
       <main className="h-screen">
-        <div className="mx-auto max-w-md py-8">
+        <div className="mx-auto max-lg py-8">
           <AppointmentForm />
         </div>
       </main>

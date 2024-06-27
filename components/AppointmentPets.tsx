@@ -6,7 +6,7 @@ import {
   useWatch,
 } from "react-hook-form";
 import { Button } from "@mui/material";
-import { Appointment, AppointmentPlan } from "../models";
+import { Appointment, EmployeePosition } from "../models";
 import { AppointmentPetForm } from "./AppointmentPetForm";
 
 export const AppointmentPets = () => {
@@ -23,7 +23,7 @@ export const AppointmentPets = () => {
   });
 
   const isPremiumSelected = useMemo(
-    () => selectedPlan === AppointmentPlan.Premium,
+    () => selectedPlan === EmployeePosition.Junior,
     [selectedPlan]
   );
 
@@ -49,7 +49,7 @@ export const AppointmentPets = () => {
 
   return (
     <section>
-      <h2 className="font-semibold my-4 text-lg">Pets</h2>
+      {/* <h2 className="font-semibold my-4 text-lg">Pets</h2> */}
 
       {petsField.fields.map((field, index) => (
         <AppointmentPetForm
@@ -68,12 +68,12 @@ export const AppointmentPets = () => {
         disabled={!isPremiumSelected}
         onClick={addNewPet}
       >
-        Add another pet
+        Add another Employee
       </Button>
 
       <p className="h-8 text-xs mt-2 text-center text-gray-400">
         {!isPremiumSelected &&
-          "You should select Premium plan to add more than 1 pet"}
+          ""}
       </p>
     </section>
   );

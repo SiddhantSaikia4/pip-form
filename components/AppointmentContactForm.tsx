@@ -20,7 +20,7 @@ export const AppointmentContactForm = () => {
   const headingStyle = {
     fontWeight: "600",
     margin: "1rem 0",
-    fontSize: "1.125rem", // equivalent to 'text-lg'
+    fontSize: "1.125rem", 
   };
 
   return (
@@ -30,14 +30,14 @@ export const AppointmentContactForm = () => {
         <div>
           <TextInput
             name="contact.firstName"
-            label="First name*"
+            label="Reporting Group*"
             placeholder="Enter"
           />
         </div>
         <div>
           <TextInput
             name="contact.lastName"
-            label="Last name*"
+            label="Reporting/Resource Manager Name*"
             placeholder="Enter"
           />
         </div>
@@ -54,7 +54,7 @@ export const AppointmentContactForm = () => {
         <div style={fullWidthStyle}>
           <CheckboxInput
             name="contact.callMeBack"
-            label="Call me back to confirm my order"
+            label="Expectations Met"
           />
         </div>
       </div>

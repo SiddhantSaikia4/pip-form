@@ -1,23 +1,19 @@
 import React, { useState } from "react";
-import {
-  useForm,
-  UseFormProps,
-  UseFormReturn,
-  FormProvider,
-} from "react-hook-form";
-import { Appointment, AppointmentPlan } from "../models";
+import { useForm, UseFormProps, UseFormReturn, FormProvider } from "react-hook-form";
+import { Appointment, EmployeePosition, Goals } from "../models";
 import { AppointmentBaseForm } from "./AppointmentBaseForm";
 import { AppointmentContactForm } from "./AppointmentContactForm";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchema } from "../validation";
-import { Button } from "@mui/material";
+import { Button, Grid, Paper, Typography } from "@mui/material";
 import { AppointmentPets } from "./AppointmentPets";
 import { DevTool } from "@hookform/devtools";
+import { RagForm } from "./RagForm";
 
 const defaultValues: Appointment = {
   title: "",
   date: new Date().toString(),
-  plan: AppointmentPlan.Basic,
+  plan: EmployeePosition.Senior,
   contact: {
     firstName: "",
     lastName: "",
@@ -32,11 +28,20 @@ const defaultValues: Appointment = {
       description: "",
     },
   ],
+  rag: [
+    {
+      date: "",
+      actiontaken: "",
+      goalsmet: Goals.Partially,
+      observation: "",
+    }
+  ]
 };
 
 export const AppointmentForm = () => {
   const [submittedData, setSubmittedData] = useState<Appointment | null>(null);
-
+  console.log(submittedData, 'submitted');
+  // console.log(submittedData.rag, 'submitted');
   const form: UseFormReturn<Appointment, UseFormProps> = useForm<Appointment>({
     defaultValues,
     resolver: yupResolver(validationSchema),
@@ -51,128 +56,142 @@ export const AppointmentForm = () => {
     setSubmittedData(null);
   };
 
-  const headingStyle = {
-    fontWeight: "600",
-    marginBottom: "1.5rem",
-    fontSize: "1.5rem",
-    textAlign: "center",
-  };
-
-  const buttonContainerStyle = {
-    display: "flex",
-    alignItems: "center",
-    gap: "1rem",
-    marginTop: "1rem",
-  };
-
-  const tableContainerStyle = {
-    marginTop: "2rem",
-  };
-
-  const tableStyle = {
-    width: "100%",
-    borderCollapse: "collapse",
-    border: "1px solid #E5E7EB", 
-  };
-
-  const thStyle = {
-    border: "1px solid #E5E7EB",
-    padding: "0.5rem",
-    backgroundColor: "#F9FAFB", 
-    textAlign: "left",
-  };
-
-  const tdStyle = {
-    border: "1px solid #E5E7EB",
-    padding: "0.5rem",
-  };
-
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(submitForm)}>
-        <h1 style={headingStyle}>Create a new appointment</h1>
+        <Typography variant="h4" component="h1" style={{ fontWeight: 600, marginBottom: "1.5rem", textAlign: "center" }}>
+          Create a new PIP 
+        </Typography>
 
-        <AppointmentBaseForm />
-        <AppointmentPets />
-        <AppointmentContactForm />
-
-        <div style={buttonContainerStyle}>
-          <div style={{ flex: 1 }}>
-            <Button type="button" variant="text" fullWidth onClick={resetForm}>
-              Clear
-            </Button>
-          </div>
-          <div style={{ flex: 1 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={6}>
+            <Paper elevation={3} style={{ padding: "1rem" }}>
+              <AppointmentBaseForm />
+              <AppointmentPets />
+              <AppointmentContactForm />
+            </Paper>
+          </Grid>
+          <Grid item xs={6}>
+            <Paper elevation={3} style={{ padding: "1rem" }}>
+              <RagForm />
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
             <Button type="submit" variant="outlined" fullWidth>
-              Make an appointment!
+              Submit
             </Button>
-          </div>
-        </div>
+          </Grid>
+          <Grid item xs={4}>
+            <Button type="button" variant="contained" fullWidth onClick={resetForm}>
+              Save
+            </Button>
+          </Grid>
+          <Grid item xs={4}>
+            <Button type="button" variant="text" fullWidth onClick={resetForm}>
+              Cancel
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            {submittedData && (
+              <Paper elevation={3} style={{ padding: "1rem", marginTop: "2rem" }}>
+                <Typography variant="h6" component="h2" style={{ fontWeight: 600, marginBottom: "1rem" }}>
+                  Submitted Data
+                </Typography>
+                <table style={{ width: "100%", borderCollapse: "collapse", border: "1px solid #E5E7EB" }}>
+                  <thead>
+                    <tr>
+                      <th style={{ border: "1px solid #E5E7EB", padding: "0.5rem", backgroundColor: "#F9FAFB" }}>
+                        Field
+                      </th>
+                      <th style={{ border: "1px solid #E5E7EB", padding: "0.5rem", backgroundColor: "#F9FAFB" }}>
+                        Value
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Department</td>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>{submittedData.title}</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Start Date</td>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>
+                        {new Date(submittedData.date).toLocaleString()}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Position</td>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>{submittedData.plan}</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Reporting Group</td>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>{submittedData.contact.firstName}</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Reporting/Resource Manager</td>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>{submittedData.contact.lastName}</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Email</td>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>{submittedData.contact.email}</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Phone Number</td>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>{submittedData.contact.phoneNumber}</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Goals met</td>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>{submittedData.rag.goalsmet}</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>End Date</td>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>{           new Date(submittedData.rag.Enddate).toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Actions Taken</td>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>{submittedData.rag.actionsTaken}</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Observations</td>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>{submittedData.rag.observations}</td>
+                    </tr>
+                    <tr>
+  <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Color</td>
+  <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>
+    <span style={{ display: "inline-block", width: "20px", height: "20px", backgroundColor: submittedData.rag.color, marginRight: "0.5rem", border: "1px solid #000" }}></span>
+    {/* {submittedData.rag.color} */}
+  </td>
+</tr>
+                    <tr>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Expectations Met</td>
+                      <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>
+                        {submittedData.contact.callMeBack ? "Yes" : "No"}
+                      </td>
+                    </tr>
+                    {submittedData.pets.map((pet, index) => (
+                      <React.Fragment key={index}>
+                        <tr>
+                          <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Employee Name</td>
+                          <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>{pet.name}</td>
+                        </tr>
+                        <tr>
+                          <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Improvement Plan</td>
+                          <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>{pet.breed}</td>
+                        </tr>
+                        <tr>
+                          <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>Evaluation process</td>
+                          <td style={{ border: "1px solid #E5E7EB", padding: "0.5rem" }}>{pet.description}</td>
+                        </tr>
+                      </React.Fragment>
+                    ))}
+                    
+                  </tbody>
+                </table>
+              </Paper>
+            )}
+          </Grid>
+        </Grid>
       </form>
-
-      {submittedData && (
-        <div style={tableContainerStyle}>
-          <h2 style={{ fontSize: "1.25rem", fontWeight: "600" }}>Submitted Data</h2>
-          <table style={tableStyle}>
-            <thead>
-              <tr>
-                <th style={thStyle}>Field</th>
-                <th style={thStyle}>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style={tdStyle}>Title</td>
-                <td style={tdStyle}>{submittedData.title}</td>
-              </tr>
-              <tr>
-                <td style={tdStyle}>Date</td>
-                <td style={tdStyle}>{new Date(submittedData.date).toLocaleString()}</td>
-              </tr>
-              <tr>
-                <td style={tdStyle}>Plan</td>
-                <td style={tdStyle}>{submittedData.plan}</td>
-              </tr>
-              <tr>
-                <td style={tdStyle}>First Name</td>
-                <td style={tdStyle}>{submittedData.contact.firstName}</td>
-              </tr>
-              <tr>
-                <td style={tdStyle}>Last Name</td>
-                <td style={tdStyle}>{submittedData.contact.lastName}</td>
-              </tr>
-              <tr>
-                <td style={tdStyle}>Email</td>
-                <td style={tdStyle}>{submittedData.contact.email}</td>
-              </tr>
-              <tr>
-                <td style={tdStyle}>Phone Number</td>
-                <td style={tdStyle}>{submittedData.contact.phoneNumber}</td>
-              </tr>
-              <tr>
-                <td style={tdStyle}>Call Me Back</td>
-                <td style={tdStyle}>{submittedData.contact.callMeBack ? "Yes" : "No"}</td>
-              </tr>
-              {submittedData.pets.map((pet, index) => (
-                <React.Fragment key={index}>
-                  <tr>
-                    <td style={tdStyle}>Pet Name</td>
-                    <td style={tdStyle}>{pet.name}</td>
-                  </tr>
-                  <tr>
-                    <td style={tdStyle}>Breed</td>
-                    <td style={tdStyle}>{pet.breed}</td>
-                  </tr>
-                  <tr>
-                    <td style={tdStyle}>Description</td>
-                    <td style={tdStyle}>{pet.description}</td>
-                  </tr>
-                </React.Fragment>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
       <DevTool control={form.control} />
     </FormProvider>
   );

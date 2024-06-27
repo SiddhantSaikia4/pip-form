@@ -33,14 +33,14 @@ export const AppointmentPetForm = ({
 
   const labelStyle = {
     marginBottom: "0.5rem",
-    color: "#9CA3AF", // Tailwind 'text-gray-400' equivalent
+    color: "#9CA3AF", 
     fontWeight: "600",
   };
 
   return (
     <section>
       <div style={containerStyle}>
-        <p style={labelStyle}>Pet {index + 1}</p>
+        {/* <p style={labelStyle}> {index + 1}</p> */}
         <Button
           color="error"
           variant="outlined"
@@ -54,21 +54,21 @@ export const AppointmentPetForm = ({
         <div>
           <TextInput
             name={`pets[${index}].name`}
-            label="Name*"
+            label="Employee Name*"
             placeholder="Enter"
           />
         </div>
         <div>
           <TextInput
             name={`pets[${index}].breed`}
-            label="Breed*"
+            label="Improvement Plan*"
             placeholder="Enter"
           />
         </div>
         <div style={fullWidthStyle}>
           <TextInput
             name={`pets[${index}].description`}
-            label="Description"
+            label="Evaluation Process"
             placeholder="Enter"
           />
         </div>
